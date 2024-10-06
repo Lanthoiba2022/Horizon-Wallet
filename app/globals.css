@@ -2,7 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
+
+
+/* :root {
   --background: #ffffff;
   --foreground: #171717;
 }
@@ -24,4 +26,19 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+} */
+
+html {
+  --background-color: white;
+  --text-color: black;
+}
+
+html.dark {
+  --background-color: black;
+  --text-color: white;
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
 }
