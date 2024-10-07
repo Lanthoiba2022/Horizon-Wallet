@@ -1,24 +1,22 @@
-"use client"
+"use client";
 
-import { useState } from 'react';
+import { useTheme } from 'next-themes';
 import { Wallet, Moon, Sun } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 const Navbar = () => {
-  // State to manage theme
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
-  // Toggle function
-  const toggleTheme = () => {
-    setIsDarkMode((prevMode) => !prevMode);
-    if (isDarkMode) {
-      document.documentElement.classList.remove('dark');
-    } else {
-      document.documentElement.classList.add('dark');
-    }
-  };
+  // Ensure theme is loaded before rendering
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null; // Prevent server-side mismatch
 
   return (
-    <div className={`flex items-center justify-between p-5 ${isDarkMode ? 'bg-gray-800 text-white' : 'bg-white text-black'}`}>
+    <div className={`flex items-center justify-between p-5 ${theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-white text-black'}`}>
       <div className="flex items-center">
         <Wallet size={50} className="text-blue-500" />
         <span className="ml-2 text-lg pt-2 font-extrabold">Horizon Wallet</span>
@@ -26,10 +24,10 @@ const Navbar = () => {
 
       {/* Toggle Button */}
       <button
-        onClick={toggleTheme}
+        onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
         className="flex items-center p-2 rounded border focus:outline-none"
       >
-        {isDarkMode ? (
+        {theme === 'dark' ? (
           <Sun size={24} className="text-yellow-500" />
         ) : (
           <Moon size={24} className="text-gray-500" />
