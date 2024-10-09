@@ -19,7 +19,7 @@ interface WalletInfo {
 }
 
 
-const provider = new ethers.JsonRpcProvider(process.env.NEXT_PUBLIC_ALCHEMY_RPC_URL);
+const provider = new ethers.JsonRpcProvider(process.env.NEXT_PUBLIC_ALCHEMY_RPC_URL_ETH);
 
 export default function EthWallet({ mnemonic }: EthWalletProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -65,7 +65,7 @@ export default function EthWallet({ mnemonic }: EthWalletProps) {
         return;
       }
       //@ts-ignore
-      const balance = await axios.post(process.env.NEXT_PUBLIC_ALCHEMY_RPC_URL,
+      const balance = await axios.post(process.env.NEXT_PUBLIC_ALCHEMY_RPC_URL_ETH,
         {
           "jsonrpc": "2.0",
           "id": 1,

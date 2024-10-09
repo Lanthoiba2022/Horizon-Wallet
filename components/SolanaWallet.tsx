@@ -19,8 +19,8 @@ interface WalletInfo {
   balance: number;
 }
 
-const SOLANA_NETWORK = "devnet";
-const connection = new Connection(`https://api.${SOLANA_NETWORK}.solana.com`);
+//@ts-ignore
+const connection = new Connection(process.env.NEXT_PUBLIC_ALCHEMY_RPC_URL_SOL);
 
 export default function SolanaWallet({ mnemonic }: SolanaWalletProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -108,16 +108,7 @@ export default function SolanaWallet({ mnemonic }: SolanaWalletProps) {
 
   const getFaucetTokens = async (index: number) => {
     try {
-      const wallet = wallets[index];
-      if (!wallet) {
-        console.error("Wallet not found at index:", index);
-        return;
-      }
-      const airdropSignature = await connection.requestAirdrop(
-        wallet.publicKey,
-        LAMPORTS_PER_SOL
-      );
-      await connection.confirmTransaction(airdropSignature);
+      window.open("https://faucet.solana.com/", "_blank");
       toast.success("Faucet tokens received");
       updateBalance(index);
     } catch (error) {
