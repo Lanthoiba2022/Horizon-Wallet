@@ -5,6 +5,9 @@ import { derivePath } from "ed25519-hd-key";
 import { Keypair, PublicKey, Connection, Transaction, SystemProgram, LAMPORTS_PER_SOL } from "@solana/web3.js";
 import nacl from "tweetnacl";
 import toast from "react-hot-toast";
+import { Eye } from 'lucide-react';
+import { EyeOff } from 'lucide-react';
+import { Copy } from 'lucide-react';
 
 interface SolanaWalletProps {
   mnemonic: string;
@@ -207,7 +210,7 @@ function WalletCard({
             onClick={() => onCopy(wallet.publicKey.toBase58())}
             className="ml-2 text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300"
           >
-            Copy
+            <Copy/>
           </button>
         </div>
       </div>
@@ -226,7 +229,7 @@ function WalletCard({
             onClick={() => setShowPrivateKey(!showPrivateKey)}
             className="ml-2 text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300"
           >
-            {showPrivateKey ? "Hide" : "Show"}
+            {showPrivateKey ? <Eye/> : <EyeOff/>}
           </button>
         </div>
       </div>

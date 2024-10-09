@@ -3,6 +3,10 @@ import { useState, useEffect } from 'react';
 import { mnemonicToSeed } from 'bip39';
 import { Wallet, HDNodeWallet, ethers } from 'ethers';
 import toast from 'react-hot-toast';
+import { Eye } from 'lucide-react';
+import { EyeOff } from 'lucide-react';
+import { Copy } from 'lucide-react';
+import axios from 'axios';
 
 interface EthWalletProps {
   mnemonic: string;
@@ -14,8 +18,8 @@ interface WalletInfo {
   balance: string;
 }
 
-const ETH_NETWORK = "goerli"; // Using Goerli testnet
-const provider = new ethers.JsonRpcProvider(`https://${ETH_NETWORK}.infura.io/v3/YOUR_INFURA_PROJECT_ID`);
+
+const provider = new ethers.JsonRpcProvider(process.env.NEXT_PUBLIC_ALCHEMY_RPC_URL);
 
 export default function EthWallet({ mnemonic }: EthWalletProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -60,18 +64,37 @@ export default function EthWallet({ mnemonic }: EthWalletProps) {
         console.error("Wallet not found at index:", index);
         return;
       }
-      const balance = await provider.getBalance(wallet.address);
-      setWallets((prevWallets) => {
-        const updatedWallets = [...prevWallets];
-        updatedWallets[index] = { ...wallet, balance: ethers.formatEther(balance) };
-        return updatedWallets;
-      });
-      toast.success("Balance updated");
+      //@ts-ignore
+      const balance = await axios.post(process.env.NEXT_PUBLIC_ALCHEMY_RPC_URL,
+        {
+          "jsonrpc": "2.0",
+          "id": 1,
+          "method": "eth_getBalance",
+          "params": [wallet.address, "latest"]
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          }
+        }
+      );
+      if (balance.data) {
+        const hexValue = balance.data.result;
+        let decimalValue = BigInt(hexValue).toString(10);
+          const formattedNumber = parseFloat(decimalValue).toFixed(4);
+          setWallets((prevWallets) => {
+            const updatedWallets = [...prevWallets];
+            updatedWallets[index] = { ...wallet, balance: ethers.formatEther(decimalValue) };
+            return updatedWallets;
+          });
+          toast.success("Balance updated");
+      }
     } catch (error) {
       console.error("Error updating balance:", error);
       toast.error("Failed to update balance");
     }
   };
+
 
   const sendTransaction = async (index: number, amount: string, to: string) => {
     try {
@@ -95,7 +118,7 @@ export default function EthWallet({ mnemonic }: EthWalletProps) {
   };
 
   const getFaucetTokens = async (index: number) => {
-    toast.error("Ethereum faucets are typically external. Please use a Goerli faucet website.");
+    window.open("https://cloud.google.com/application/web3/faucet/ethereum/sepolia", "_blank");
   };
 
   return (
@@ -182,7 +205,7 @@ function WalletCard({
             onClick={() => onCopy(wallet.address)}
             className="ml-2 text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300"
           >
-            Copy
+            <Copy/>
           </button>
         </div>
       </div>
@@ -201,7 +224,7 @@ function WalletCard({
             onClick={() => setShowPrivateKey(!showPrivateKey)}
             className="ml-2 text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300"
           >
-            {showPrivateKey ? "Hide" : "Show"}
+            {showPrivateKey ? <Eye/> : <EyeOff/>}
           </button>
         </div>
       </div>
