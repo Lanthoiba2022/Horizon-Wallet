@@ -1,10 +1,10 @@
 
-import type { AppProps } from 'next/app';
+
 import { ThemeProvider } from 'next-themes';
 import { Toaster } from 'react-hot-toast';
 import AppComp from '@/components/AppComp';
 
-function Home({ Component, pageProps }: AppProps) {
+function Home() {
   return (
     <ThemeProvider attribute="class">
       <AppComp/>
