@@ -64,7 +64,7 @@ export default function AppComp() {
           <div className="max-w-md mx-auto">
             <div className="flex justify-between items-center mb-6">
               <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-                Web3 Wallet Generator
+                Crypto Wallet Generator
               </h1>
               <button
                 onClick={toggleTheme}
