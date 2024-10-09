@@ -132,7 +132,7 @@ export default function AppComp() {
                                 className="w-full p-2 border rounded-md bg-slate-50 dark:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 rows={3}
                                 style={{
-                                  //@ts-ignore
+                                  //@ts-expect-error
                                   WebkitTextSecurity: showMnemonic
                                     ? "none"
                                     : "disc",

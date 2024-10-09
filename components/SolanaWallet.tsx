@@ -19,7 +19,7 @@ interface WalletInfo {
   balance: number;
 }
 
-//@ts-ignore
+//@ts-expect-error
 const connection = new Connection(process.env.NEXT_PUBLIC_ALCHEMY_RPC_URL_SOL);
 
 export default function SolanaWallet({ mnemonic }: SolanaWalletProps) {

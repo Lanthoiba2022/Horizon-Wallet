@@ -1,5 +1,5 @@
 "use client"
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { mnemonicToSeed } from 'bip39';
 import { Wallet, HDNodeWallet, ethers } from 'ethers';
 import toast from 'react-hot-toast';
@@ -64,7 +64,7 @@ export default function EthWallet({ mnemonic }: EthWalletProps) {
         console.error("Wallet not found at index:", index);
         return;
       }
-      //@ts-ignore
+      //@ts-expect-error
       const balance = await axios.post(process.env.NEXT_PUBLIC_ALCHEMY_RPC_URL_ETH,
         {
           "jsonrpc": "2.0",
@@ -80,8 +80,7 @@ export default function EthWallet({ mnemonic }: EthWalletProps) {
       );
       if (balance.data) {
         const hexValue = balance.data.result;
-        let decimalValue = BigInt(hexValue).toString(10);
-          const formattedNumber = parseFloat(decimalValue).toFixed(4);
+        const decimalValue = BigInt(hexValue).toString(10);
           setWallets((prevWallets) => {
             const updatedWallets = [...prevWallets];
             updatedWallets[index] = { ...wallet, balance: ethers.formatEther(decimalValue) };
