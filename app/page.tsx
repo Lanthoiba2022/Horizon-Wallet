@@ -1,8 +1,16 @@
-import AppComp from "@/components/AppComp";
 
+import type { AppProps } from 'next/app';
+import { ThemeProvider } from 'next-themes';
+import { Toaster } from 'react-hot-toast';
+import AppComp from '@/components/AppComp';
 
-export default function Home() {
+function Home({ Component, pageProps }: AppProps) {
   return (
-    <AppComp/>
+    <ThemeProvider attribute="class">
+      <AppComp/>
+      <Toaster position="bottom-right" />
+    </ThemeProvider>
   );
 }
+
+export default Home;
